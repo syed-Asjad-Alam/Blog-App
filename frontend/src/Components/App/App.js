@@ -72,6 +72,7 @@ function App() {
 
 
   return (
+    <div className='Main'>
     <div>
       <div className="heading">
           <h1> Welcome to the Blog Application</h1>
@@ -91,8 +92,8 @@ function App() {
           </div>
           <div className='innerMain'>
             <label>Content</label>
-            <input type='text' value={content} 
-            onChange={(text) => setcontent(text.target.value)}></input>
+            <textarea type='text' value={content} 
+            onChange={(text) => setcontent(text.target.value)}></textarea>
           </div>
           <div className='innerMain'>
             <label>Date</label>
@@ -117,8 +118,8 @@ function App() {
         {blogs.map((item,index) => {
           return (
             <div>
-              <button className={selectedblog === item._id ? "light" : "default"}>
-                <li onClick={() => {
+              <button className={selectedblog === item._id ? "light" : "default"}
+              onClick={() => {
                   setcreator_name(item.creator_name)
                   settitle(item.title)
                   setcontent(item.content)
@@ -126,13 +127,15 @@ function App() {
                   setupdated_at(item.updated_at)
                   setselectedblog(item._id)
 
-                }}
-                key={index}>{item.creator_name} {item.title} {item.content} {item.date} {item.updated_at}</li>
+                }}>
+                <li key={index}>{item.creator_name} {item.title} {item.date} {item.updated_at}</li>
+                <p>{item.content}</p>
               </button>
             </div>
           )
         })}
       </div>
+    </div>
     </div>
   );
 }
