@@ -1,5 +1,7 @@
 const Blog = require('../models/BlogModel')
 
+
+//for creating a blog
 exports.createblog = async (req, res) => {
     try {
         const blog = new Blog({
@@ -17,6 +19,86 @@ exports.createblog = async (req, res) => {
             })
         )
 
+    }
+
+    catch (err){
+        res.status(500).json({
+            msg:"error"
+        })
+        return
+    }
+}
+
+//for getting a single blog
+exports.getblog = async (req, res) => {
+    try {
+        const blog = await Blog.findOne({_id:req.params.id})
+        res.status(200).json({
+            status:"Success",
+            data: blog
+            })
+ 
+    }
+
+    catch (err){
+        res.status(500).json({
+            msg:"error"
+        })
+        return
+    }
+}
+//for getting all blogs
+exports.getallblogs = async (req, res) => {
+    try {
+        const blog = await Blog.find()
+        res.status(200).json({
+            status:"Success",
+            items:blog.length,
+            data: blog
+            })
+ 
+    }
+
+    catch (err){
+        res.status(500).json({
+            msg:"error"
+        })
+        return
+    }
+}
+//for updating a blog
+exports.updateblog = async (req, res) => {
+    try {
+        const blog = await Blog.findByIdAndUpdate({_id:req.params.id},{
+            creator_name:req.body.creator_name,
+            title:req.body.title,
+            content:req.body.content,
+            date:req.body.date,
+            updated_at:Date.now()
+        })
+        res.status(200).json({
+            status:"Updated Successfully",
+            data: blog
+            })
+ 
+    }
+
+    catch (err){
+        res.status(500).json({
+            msg:"error"
+        })
+        return
+    }
+}
+//for deleting a blog
+exports.deleteblog = async (req, res) => {
+    try {
+        const blog = await Blog.deleteOne({_id:req.params.id})
+        res.status(200).json({
+            status:"Deleted Successfully",
+            data: blog
+            })
+ 
     }
 
     catch (err){
