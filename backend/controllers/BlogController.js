@@ -1,6 +1,7 @@
 const Blog = require('../models/BlogModel')
 
 
+
 //for creating a blog
 exports.createblog = async (req, res) => {
     try {
@@ -8,7 +9,7 @@ exports.createblog = async (req, res) => {
             creator_name:req.body.creator_name,
             title:req.body.title,
             content:req.body.content,
-            date:req.body.date,
+            created_at:req.body.created_at,
             updated_at:req.body.updated_at
         })
 
@@ -32,7 +33,7 @@ exports.createblog = async (req, res) => {
 //for getting a single blog
 exports.getblog = async (req, res) => {
     try {
-        const blog = await Blog.findOne({_id:req.params.id})
+        const blog = await Blog.findOne({_id:req.params.id}).populate({path:"Comment"})
         res.status(200).json({
             status:"Success",
             data: blog
@@ -73,7 +74,7 @@ exports.updateblog = async (req, res) => {
             creator_name:req.body.creator_name,
             title:req.body.title,
             content:req.body.content,
-            date:req.body.date,
+            created_at:req.body.created_at,
             updated_at:Date.now()
         })
         res.status(200).json({
@@ -91,14 +92,10 @@ exports.updateblog = async (req, res) => {
     }
 }
 //for deleting a blog
-exports.deleteblog = async (req, res) => {
+exports.deleteblog = async (req, res, next) => {
     try {
         const blog = await Blog.deleteOne({_id:req.params.id})
-        res.status(200).json({
-            status:"Deleted Successfully",
-            data: blog
-            })
- 
+        next() 
     }
 
     catch (err){
